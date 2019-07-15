@@ -1,4 +1,5 @@
 #import "RNBluetoothHeadsetDetect.h"
+#import <AVFoundation/AVFoundation.h>
 
 @implementation RNBluetoothHeadsetDetect
 
