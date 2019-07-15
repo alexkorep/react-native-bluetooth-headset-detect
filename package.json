@@ -1,7 +1,7 @@
 {
   "name": "react-native-bluetooth-headset-detect",
   "title": "Bluetooth Headset Detection for React Native",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
