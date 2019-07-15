@@ -1,5 +1,12 @@
-import { NativeModules } from 'react-native';
+import {
+  NativeModules,
+  Platform,
+  NativeEventEmitter,
+  DeviceEventEmitter,
+} from "react-native";
 
-const { RNBluetoothHeadsetDetect } = NativeModules;
 
-export default RNBluetoothHeadsetDetect;
+export default Platform.select({
+  ios: new NativeEventEmitter(NativeModules.RNBluetoothHeadsetDetect),
+  android: DeviceEventEmitter,
+});
