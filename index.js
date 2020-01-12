@@ -1,12 +1,33 @@
-import {
-  NativeModules,
-  Platform,
-  NativeEventEmitter,
-  DeviceEventEmitter,
-} from "react-native";
+import {NativeEventEmitter, NativeModules} from 'react-native';
+import {useEffect, useState} from 'react';
 
+const BluetoothHeadsetDetectModule = NativeModules.RNBluetoothHeadsetDetect;
+const bluetoothHeadsetDetectEmitter = new NativeEventEmitter(
+  BluetoothHeadsetDetectModule,
+);
 
-export default Platform.select({
-  ios: new NativeEventEmitter(NativeModules.RNBluetoothHeadsetDetect),
-  android: DeviceEventEmitter,
+var EventEmitter = require('events');
+var ee = new EventEmitter();
+const MSG = 'message';
+let device = null;
+
+bluetoothHeadsetDetectEmitter.addListener('onChange', ({devices}) => {
+  console.log('call listener with', devices);
+  device = devices.length ? devices[0] : null;
+  ee.emit(MSG, device);
 });
+
+const useBluetoothHeadsetDetection = () => {
+  const [headset, setHeadset] = useState(null);
+  useEffect(() => {
+    setHeadset(device);
+    ee.addListener(MSG, setHeadset);
+    return () => {
+      ee.removeListener(MSG, setHeadset);
+    };
+  }, []);
+
+  return headset;
+};
+
+export default useBluetoothHeadsetDetection;

@@ -37,6 +37,18 @@ Bluetooth Headset Detection for React Native
 
 
 ## Usage
+### With React hooks:
+```javascript
+import useBluetoothHeadsetDetection from 'react-native-bluetooth-headset-detect';
+
+const MyComponent = () => {
+  const device = useBluetoothHeadsetDetection();
+  return (
+    <Text>Connected headset: {device}</Text>
+  );
+};
+```
+### Without React hooks:
 ```javascript
 import { NativeEventEmitter, NativeModules } from "react-native";
 
