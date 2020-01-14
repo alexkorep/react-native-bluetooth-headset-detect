@@ -51,3 +51,6 @@ bluetoothHeadsetDetectEmitter.addListener("onChange", ({ devices }) => {
   }
 });
 ```
+
+## Demo project
+[https://github.com/alexkorep/react-native-bluetooth-headset-detect-demo](https://github.com/alexkorep/react-native-bluetooth-headset-detect-demo)
