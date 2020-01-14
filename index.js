@@ -1,35 +1,42 @@
-import {NativeEventEmitter, NativeModules} from 'react-native';
-import {useEffect, useState} from 'react';
-import EventEmitter from 'events';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+import { useEffect, useState } from 'react';
 
 const BluetoothHeadsetDetectModule = NativeModules.RNBluetoothHeadsetDetect;
 const bluetoothHeadsetDetectEmitter = new NativeEventEmitter(
-  BluetoothHeadsetDetectModule,
+  BluetoothHeadsetDetectModule
 );
 
-const ee = new EventEmitter();
-const MSG = 'onChange';
 let device = null;
+const listeners = [];
 
-bluetoothHeadsetDetectEmitter.addListener('onChange', ({devices}) => {
-  console.log('call listener with', devices);
+bluetoothHeadsetDetectEmitter.addListener('onChange', ({ devices }) => {
   device = devices.length ? devices[0] : null;
-  ee.emit(MSG, device);
+  listeners.forEach(listener => {
+    listener(device);
+  });
 });
 
 // Events
 export const getHeadset = () => device;
-export const addListener = ee.addListener;
-export const removeListener = ee.removeListener;
+export const addListener = listener => {
+  listeners.push(listener);
+};
+export const removeListener = listener => {
+  const idx = listeners.indexOf(listener);
+  if (idx === -1) {
+    return;
+  }
+  listeners.splice(idx, 1);
+};
 
 // React hook
 export const useBluetoothHeadsetDetection = () => {
   const [headset, setHeadset] = useState(null);
   useEffect(() => {
     setHeadset(device);
-    ee.addListener(MSG, setHeadset);
+    addListener(setHeadset);
     return () => {
-      ee.removeListener(MSG, setHeadset);
+      removeListener(setHeadset);
     };
   }, []);
 
