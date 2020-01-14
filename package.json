@@ -31,8 +31,5 @@
     "eslint": "^6.5.1",
     "react": "^16.5.0",
     "react-native": "^0.61.4"
-  },
-  "dependencies": {
-    "events": "^3.1.0"
   }
 }
