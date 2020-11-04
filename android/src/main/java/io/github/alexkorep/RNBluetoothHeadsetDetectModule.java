@@ -8,8 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioDeviceInfo;
-import android.media.AudioManager;
 import android.bluetooth.BluetoothA2dp;
 
 import com.facebook.react.bridge.Arguments;
@@ -19,6 +17,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import java.util.Set;
 
 public class RNBluetoothHeadsetDetectModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -87,16 +87,12 @@ public class RNBluetoothHeadsetDetectModule extends ReactContextBaseJavaModule i
         if (activity == null) {
             return;
         }
-        final AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
-        AudioDeviceInfo[] devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
-        for (AudioDeviceInfo device : devices) {
-            final int type = device.getType();
-            if (type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP || type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {
-                // Device is found
-                final String deviceName = device.getProductName().toString();
-                onChange(deviceName);
-                return;
-            }
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        for (BluetoothDevice bt : pairedDevices) {
+            // Device is found
+            onChange(bt.getName());
+            return;
         }
         // No devices found
         onChange("");
