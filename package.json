@@ -23,13 +23,13 @@
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "^16.5.0",
+    "react": "^18.2.0",
     "react-native": ">=0.57.0-rc.0 <1.0.x"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^0.0.5",
     "eslint": "^6.5.1",
-    "react": "^16.5.0",
-    "react-native": "^0.61.4"
+    "react": "^18.2.0",
+    "react-native": "^0.73.2"
   }
 }
